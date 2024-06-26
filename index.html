@@ -13,9 +13,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #000000, #ffffff, #777777);
+            background: linear-gradient(135deg, #000000, #333333, #555555);
             background-size: 400% 400%;
             animation: gradient 15s ease infinite;
+            color: #ffffff;
         }
 
         @keyframes gradient {
@@ -25,10 +26,10 @@
         }
 
         .container {
-            background-color: rgba(255, 255, 255, 0.85);
+            background-color: rgba(0, 0, 0, 0.85);
             padding: 40px;
             border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
             text-align: center;
             animation: fadeIn 1.5s ease-out;
         }
@@ -40,7 +41,7 @@
 
         h1 {
             margin-bottom: 20px;
-            color: #333;
+            color: #ffffff;
         }
 
         .buttons {
@@ -58,13 +59,13 @@
         }
 
         #startButton {
-            background-color: #4CAF50;
+            background-color: #000000;
             color: white;
         }
 
         #stopButton {
-            background-color: #f44336;
-            color: white;
+            background-color: white;
+            color: black;
         }
 
         button:hover {
@@ -74,7 +75,17 @@
         #status {
             margin-top: 30px;
             font-weight: bold;
-            color: #333;
+            color: #ffffff;
+        }
+
+        #logs {
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
@@ -86,6 +97,7 @@
             <button id="stopButton">Stop</button>
         </div>
         <div id="status">Bot is stopped.</div>
+        <div id="logs"></div>
     </div>
     <script>
         let isRunning = false;
@@ -96,12 +108,10 @@
             fetch(endpoint)
                 .then(response => response.json())
                 .then(data => {
-                    console.log("Request sent successfully. Response:", data);
-                    updateStatus("Request sent successfully.");
+                    logMessage("Request sent successfully. Response: " + JSON.stringify(data));
                 })
                 .catch(error => {
-                    console.error("An error occurred:", error);
-                    updateStatus("An error occurred. Retrying in 30 seconds...");
+                    logMessage("An error occurred: " + error);
                 })
                 .finally(() => {
                     if (isRunning) {
@@ -136,6 +146,14 @@
             console.log(message); 
         }
 
+        function logMessage(message) {
+            const logsElement = document.getElementById("logs");
+            const logEntry = document.createElement("div");
+            logEntry.textContent = new Date().toLocaleTimeString() + " - " + message;
+            logsElement.appendChild(logEntry);
+            console.log(message);
+        }
+
         function checkBotStatus() {
             const storedStatus = localStorage.getItem('isRunning');
             if (storedStatus === 'true') {
@@ -149,7 +167,7 @@
         document.getElementById("startButton").addEventListener("click", startBot);
         document.getElementById("stopButton").addEventListener("click", stopBot);
 
-        
+       
         window.onload = checkBotStatus;
     </script>
 </body>
