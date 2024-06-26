@@ -13,7 +13,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #ffffff 0%, #b0bec5 100%);
+            background: linear-gradient(135deg, #000000, #ffffff, #777777);
             background-size: 400% 400%;
             animation: gradient 15s ease infinite;
         }
@@ -102,9 +102,11 @@
                 .catch(error => {
                     console.error("An error occurred:", error);
                     updateStatus("An error occurred. Retrying in 30 seconds...");
+                })
+                .finally(() => {
                     if (isRunning) {
                         clearInterval(intervalId);
-                        intervalId = setTimeout(sendRequest, 30000); // Retry after 30 seconds
+                        intervalId = setInterval(sendRequest, 30000); // Retry after 30 seconds
                     }
                 });
         }
