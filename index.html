@@ -13,7 +13,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #000000, #ffffff);
+            background: linear-gradient(135deg, #000000 0%, #000000 50%, #ffffff 100%);
             background-size: 400% 400%;
             animation: gradient 15s ease infinite;
         }
@@ -63,8 +63,8 @@
         }
 
         #stopButton {
-            background-color: white;
-            color: black;
+            background-color: black;
+            color: white;
         }
 
         button:hover {
@@ -87,6 +87,11 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             color: black;
         }
+
+        .loading {
+            font-style: italic;
+            color: #666;
+        }
     </style>
 </head>
 <body>
@@ -97,11 +102,11 @@
             <button id="stopButton">Stop</button>
         </div>
         <div id="status">Bot is stopped.</div>
-        <div id="logs"></div>
+        <div id="logs" class="loading">Loading logs...</div>
     </div>
     <script>
         let isRunning = false;
-        const endpoint = "https://hashbin.onrender.com/paste/667ba5b9fc902e20d6b9265c"; // Replace with your API endpoint
+        const endpoint = "https://hashbin.onrender.com/paste/667ba5b9fc902e20d6b9265c";
         let intervalId;
 
         function sendRequest() {
@@ -120,8 +125,8 @@
                 isRunning = true;
                 localStorage.setItem('isRunning', 'true');
                 updateStatus("Bot is running...");
-                sendRequest(); // Send the first request immediately
-                intervalId = setInterval(sendRequest, 30000); // Then every 30 seconds
+                sendRequest();
+                intervalId = setInterval(sendRequest, 30000);
             }
         }
 
@@ -145,7 +150,7 @@
             const logEntry = document.createElement("div");
             logEntry.textContent = new Date().toLocaleTimeString() + " - " + message;
             logsElement.appendChild(logEntry);
-            logsElement.scrollTop = logsElement.scrollHeight; // Scroll to the bottom
+            logsElement.scrollTop = logsElement.scrollHeight;
             console.log(message);
         }
 
@@ -155,15 +160,19 @@
                 startBot();
             } else {
                 updateStatus("Bot is stopped.");
+                logMessage("Logs loaded.");
             }
         }
 
-        
         document.getElementById("startButton").addEventListener("click", startBot);
         document.getElementById("stopButton").addEventListener("click", stopBot);
 
-        
-        window.onload = checkBotStatus;
+        window.onload = () => {
+            const logsElement = document.getElementById("logs");
+            logsElement.classList.remove("loading");
+            logsElement.innerHTML = '';
+            checkBotStatus();
+        };
     </script>
 </body>
 </html>
