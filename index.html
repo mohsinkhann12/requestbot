@@ -13,10 +13,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #000000, #333333, #555555);
+            background: linear-gradient(135deg, #000000, #ffffff);
             background-size: 400% 400%;
             animation: gradient 15s ease infinite;
-            color: #ffffff;
         }
 
         @keyframes gradient {
@@ -26,10 +25,10 @@
         }
 
         .container {
-            background-color: rgba(0, 0, 0, 0.85);
+            background-color: white;
             padding: 40px;
             border-radius: 12px;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             text-align: center;
             animation: fadeIn 1.5s ease-out;
         }
@@ -41,7 +40,7 @@
 
         h1 {
             margin-bottom: 20px;
-            color: #ffffff;
+            color: #333;
         }
 
         .buttons {
@@ -59,7 +58,7 @@
         }
 
         #startButton {
-            background-color: #000000;
+            background-color: black;
             color: white;
         }
 
@@ -75,17 +74,18 @@
         #status {
             margin-top: 30px;
             font-weight: bold;
-            color: #ffffff;
+            color: #333;
         }
 
         #logs {
             margin-top: 20px;
             max-height: 200px;
             overflow-y: auto;
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: rgba(128, 128, 128, 0.2);
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            color: black;
         }
     </style>
 </head>
@@ -112,12 +112,6 @@
                 })
                 .catch(error => {
                     logMessage("An error occurred: " + error);
-                })
-                .finally(() => {
-                    if (isRunning) {
-                        clearInterval(intervalId);
-                        intervalId = setInterval(sendRequest, 30000); // Retry after 30 seconds
-                    }
                 });
         }
 
@@ -151,6 +145,7 @@
             const logEntry = document.createElement("div");
             logEntry.textContent = new Date().toLocaleTimeString() + " - " + message;
             logsElement.appendChild(logEntry);
+            logsElement.scrollTop = logsElement.scrollHeight; // Scroll to the bottom
             console.log(message);
         }
 
@@ -167,7 +162,7 @@
         document.getElementById("startButton").addEventListener("click", startBot);
         document.getElementById("stopButton").addEventListener("click", stopBot);
 
-       
+        
         window.onload = checkBotStatus;
     </script>
 </body>
