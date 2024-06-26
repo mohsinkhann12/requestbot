@@ -1,5 +1,5 @@
 let isRunning = false;
-const endpoint = "http://yourapi.com/endpoint"; // Replace with your API endpoint
+const endpoint = "https://hashbin.onrender.com"; // Replace with your API endpoint
 
 function sendRequest() {
     fetch(endpoint)
